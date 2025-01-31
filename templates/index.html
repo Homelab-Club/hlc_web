@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Homelab Club | OSU</title>
+    
+    <!-- Replace all existing favicon links with this single line -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/tabicon.ico') }}">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f1eb;
+            color: #2b2926;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-padding-top: 100px;
+        }
+
+        /* Updated gradient and colors */
+        .gradient-text {
+            background: linear-gradient(90deg, #1a2a6c, #2d4386);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Updated navigation */
+        nav {
+            background-color: #ebe6e0;
+            border-bottom: 1px solid #d4cdc3;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+        nav.scrolled {
+            background-color: rgba(235, 230, 224, 0.9);
+            backdrop-filter: saturate(180%) blur(20px);
+        }
+
+        /* Updated hero section */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 32px;
+            background: linear-gradient(
+                135deg,
+                rgba(26, 42, 108, 0.05),
+                rgba(45, 67, 134, 0.1)
+            );
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.25em;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        /* Updated benefits cards */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 32px 0;
+            margin: 0;
+        }
+
+        .benefit-card {
+            background-color: #ebe6e0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .benefit-card:hover {
+            background-color: #d4cdc3;
+            transform: translateY(-5px);
+        }
+
+        /* Updated schedule table */
+        .schedule-table {
+            width: 100%;
+            max-width: 900px;
+            margin: 32px auto;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .schedule-table th {
+            background-color: #1a2a6c;
+            color: white;
+            padding: 1rem;
+        }
+
+        .schedule-table td {
+            padding: 1rem;
+            border: 1px solid #d4cdc3;
+        }
+
+        /* Updated contact section */
+        .contact-content {
+            max-width: 800px;
+            margin: 32px auto;
+            padding: 0 32px;
+            text-align: center;
+        }
+
+        .contact-content p {
+            margin-bottom: 24px;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background-color: #ebe6e0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #2b2926;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background-color: #d4cdc3;
+            transform: translateY(-2px);
+        }
+
+        /* Modern Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 980px;  /* Apple-style rounded corners */
+            font-size: 1.1em;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 10px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #2d4386, #1a2a6c);
+            color: white;
+            box-shadow: 0 2px 8px rgba(29, 42, 108, 0.2);
+        }
+
+        .btn.secondary {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            color: #1a2a6c;
+            border: 1px solid rgba(26, 42, 108, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn.primary:hover {
+            background: linear-gradient(135deg, #34508f, #1f3177);
+            color: white;
+            box-shadow: 0 4px 15px rgba(29, 42, 108, 0.3);
+        }
+
+        .btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1a2a6c;
+            border-color: rgba(26, 42, 108, 0.3);
+        }
+
+        /* Navigation Links */
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: #1a2a6c;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #1a2a6c, #2d4386);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav ul li a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* CTA Buttons Container */
+        .cta-buttons {
+            margin-top: 32px;
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Contact Items */
+        .contact-item {
+            background: rgba(235, 230, 224, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(26, 42, 108, 0.1);
+            padding: 16px 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .contact-item:hover {
+            background: rgba(235, 230, 224, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-item i {
+            color: #1a2a6c;
+            font-size: 1.2em;
+        }
+
+        /* Smooth Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeIn 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Hero Section Updates */
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #1a2a6c, #2d4386);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero p {
+            font-size: 1.5em;
+            color: #4a4a4a;
+            margin-bottom: 32px;
+            animation: fadeIn 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Container and Spacing Updates */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 64px; /* Increased side padding */
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 32px; /* Slightly smaller padding on mobile */
+            }
+        }
+
+        /* Section Spacing */
+        .section {
+            margin: 48px 0;
+            padding: 24px 0;
+        }
+
+        /* Schedule Table specific spacing */
+        #meetings {
+            margin-bottom: 48px;
+        }
+
+        #join {
+            margin-top: 48px;
+        }
+
+        /* Benefits Grid Update */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 32px 0;
+            margin: 0;
+        }
+
+        /* Schedule Table Update */
+        .schedule-table {
+            width: 100%;
+            max-width: 900px;
+            margin: 32px auto;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Hero Section Update */
+        .hero {
+            padding: 0 32px; /* Add padding to hero section */
+        }
+
+        /* Contact Section Update */
+        .contact-content {
+            max-width: 800px;
+            margin: 32px auto;
+            padding: 0 32px;
+        }
+
+        .contact-links {
+            max-width: 600px; /* Keep contact items from stretching too wide */
+            margin: 0 auto;
+        }
+
+        /* Navigation Update */
+        nav .container {
+            max-width: 1400px; /* Slightly wider nav container */
+            padding: 0 64px;
+        }
+
+        nav ul {
+            gap: 48px; /* More spacing between nav items */
+        }
+
+        /* CTA Buttons Update */
+        .cta-buttons {
+            margin-top: 48px;
+            gap: 24px; /* More spacing between buttons */
+        }
+
+        /* Update scroll padding for the whole page */
+        html {
+            scroll-padding-top: 96px; /* navbar height + additional padding */
+            scroll-behavior: smooth;
+        }
+
+        /* Section heading styles */
+        .section h2 {
+            margin-bottom: 24px;
+            font-size: 2.5em;
+            padding-top: 0;
+        }
+
+        /* Optional: Add a subtle fade-in effect when scrolling to sections */
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .logo-link {
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-link:hover {
+            opacity: 0.8;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;  /* Makes the text bolder */
+            letter-spacing: -0.5px;  /* Tighter letter spacing for modern look */
+        }
+
+        /* Features Grid (similar to their "What We Do" section) */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 64px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 16px;
+            color: #1a2a6c;
+        }
+
+        /* CTA Section Update */
+        .cta-section {
+            text-align: center;
+            padding: 96px 32px;
+            background: linear-gradient(135deg, #1a2a6c, #2d4386);
+            color: white;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-top: 32px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn.primary {
+            background: white;
+            color: #1a2a6c;
+        }
+
+        .btn.secondary {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        /* Footer Update */
+        footer {
+            text-align: center;
+            padding: 32px;
+            background: #f5f1eb;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            color: #666;
+        }
+
+        /* Base responsive settings */
+        html {
+            font-size: 16px; /* Base font size */
+        }
+
+        /* Container responsiveness */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px; /* Smaller default padding */
+        }
+
+        /* Responsive typography */
+        h1 {
+            font-size: clamp(2rem, 5vw, 4rem); /* Fluid typography */
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+        }
+
+        p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+        }
+
+        /* Mobile navigation */
+        @media (max-width: 768px) {
+            nav .container {
+                padding: 0 16px;
+            }
+
+            nav ul {
+                gap: 16px; /* Smaller gap on mobile */
+            }
+
+            nav ul li a {
+                font-size: 0.9rem; /* Slightly smaller text on mobile */
+            }
+            
+            /* Optional: Hide nav text, show only icons on very small screens */
+            @media (max-width: 480px) {
+                nav ul li span {
+                    display: none;
+                }
+            }
+        }
+
+        /* Responsive grid layouts */
+        .benefits, .features-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: clamp(1rem, 3vw, 3rem);
+            padding: clamp(1rem, 3vw, 2rem);
+        }
+
+        /* Responsive cards */
+        .benefit-card, .feature-card {
+            padding: clamp(1rem, 3vw, 1.5rem);
+        }
+
+        /* Responsive table */
+        @media (max-width: 768px) {
+            .schedule-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .schedule-table th, 
+            .schedule-table td {
+                min-width: 120px; /* Ensure readable width on mobile */
+            }
+        }
+
+        /* Responsive buttons */
+        .cta-buttons {
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        @media (min-width: 480px) {
+            .cta-buttons {
+                flex-direction: row;
+            }
+        }
+
+        .btn {
+            width: 100%; /* Full width on mobile */
+            max-width: 300px; /* Max width for larger screens */
+            text-align: center;
+        }
+
+        /* Responsive spacing */
+        .section {
+            margin: 48px 0;
+            padding: 24px 0;
+        }
+
+        /* Hero section responsiveness */
+        .hero {
+            min-height: clamp(400px, 90vh, 800px);
+            padding: clamp(2rem, 5vw, 4rem) 1rem;
+        }
+
+        /* Contact section responsiveness */
+        .contact-links {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .contact-item {
+            width: 100%;
+        }
+
+        /* Add smooth transitions for resize events */
+        * {
+            transition: padding 0.3s ease, margin 0.3s ease, width 0.3s ease;
+        }
+
+        /* Footer styling */
+        .footer {
+            background: #f5f1eb;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 24px 32px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr; /* This creates equal space on both sides of center */
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-left {
+            text-align: left;
+        }
+
+        .footer-center {
+            text-align: center;
+            /* Ensure center text doesn't shift */
+            white-space: nowrap;
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end; /* Push icons to the right */
+        }
+
+        .footer p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .footer-right a {
+            color: #666;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-right a:hover {
+            color: #1a2a6c;
+        }
+
+        /* Responsive footer */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .footer-right {
+                justify-content: center;
+            }
+        }
+
+        /* Logo styling */
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            height: 40px;  /* Adjust size as needed */
+            width: 40px;   /* Adjust size as needed */
+            border: 2px solid #1a2a6c;
+            border-radius: 8px;
+            padding: 2px;
+            background-color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="logo-link">
+                <img src="{{ url_for('static', filename='images/logo/corner_logo.jpg') }}" alt="Homelab Club Logo" class="nav-logo">
+                <div class="logo gradient-text">Homelab Club</div>
+            </a>
+            <ul>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                <li><a href="#benefits">Benefits</a></li>
+                <li><a href="#meetings">Meetings</a></li>
+                <li><a href="#join">Join Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="gradient-text">Homelab Club at OSU</h1>
+        <p>Learn. Build. Deploy. Connect.</p>
+        <div class="cta-buttons">
+            <a href="#join" class="btn primary">Join the Club</a>
+            <a href="#meetings" class="btn primary">View Schedule</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Benefits Section -->
+        <div class="section" id="benefits">
+            <h2 class="gradient-text">Why Join Us?</h2>
+            <div class="benefits">
+                <div class="benefit-card">
+                    <i class="fas fa-server"></i>
+                    <h3>Hands-on Experience</h3>
+                    <p>Build and manage your own server infrastructure</p>
+                </div>
+                <div class="benefit-card">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>Networking Skills</h3>
+                    <p>Learn about networking, routing, and security</p>
+                </div>
+                <div class="benefit-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Community</h3>
+                    <p>Connect with like-minded tech enthusiasts</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meetings Section -->
+        <div class="section" id="meetings">
+            <h2 class="gradient-text">Meeting Schedule</h2>
+            <table class="schedule-table">
+                <tr>
+                    <th>Day</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                </tr>
+                <tr>
+                    <td>Friday</td>
+                    <td>6:00pm</td>
+                    <td>STAG 111</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Join Section -->
+        <div class="section" id="join">
+            <h2 class="gradient-text">Join the Club!</h2>
+            <div class="contact-content">
+                <p>Ready to start your homelab journey? Join us today!</p>
+                <div class="contact-links">
+                    <a href="mailto:homelab.clubs@oregonstate.edu" class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email Us</span>
+                    </a>
+                    <a href="https://discord.gg/bfxjgvzCSf" class="contact-item">
+                        <i class="fab fa-discord"></i>
+                        <span>Join our Discord</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <p>&copy; 2025 Homelab Club at Oregon State University</p>
+            </div>
+            <div class="footer-center">
+                <p>Built with tears by The Homelab Club Team</p>
+            </div>
+            <div class="footer-right">
+                <a href="https://github.com/Homelab-Club" target="_blank" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:homelab.clubs@oregonstate.edu" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://discord.gg/bfxjgvzCSf" target="_blank" aria-label="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Keep the existing JavaScript -->
+    <script>
+        // Smooth scroll with offset for navigation links
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // Get the target element
+                const target = document.querySelector(this.getAttribute('href'));
+                
+                // Calculate header height (for offset)
+                const navHeight = document.querySelector('nav').offsetHeight;
+                
+                // Additional offset for breathing room
+                const additionalOffset = 32; // Adjust this value as needed
+                
+                // Calculate the total offset
+                const totalOffset = navHeight + additionalOffset;
+                
+                // Get the target's position
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+                
+                // Smooth scroll to target with offset
+                window.scrollTo({
+                    top: targetPosition - totalOffset,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Update nav background on scroll (optional but recommended)
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+
+    <!-- Add this script for the fade-in effect (optional) -->
+    <script>
+        // Intersection Observer for fade-in sections
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // Observe all sections
+        document.querySelectorAll('.section').forEach((section) => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html> 

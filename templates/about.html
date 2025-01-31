@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/tabicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Base styles from index.html */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f1eb;
+            color: #2b2926;
+            line-height: 1.6;
+        }
+
+        /* Navigation styles from index.html */
+        nav {
+            background-color: #ebe6e0;
+            border-bottom: 1px solid #d4cdc3;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 64px;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 48px;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: #1a2a6c;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #1a2a6c, #2d4386);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav ul li a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .logo-link {
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-link:hover {
+            opacity: 0.8;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #1a2a6c, #2d4386);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Officers Grid */
+        .officers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 32px;
+            padding: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .officer-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(26, 42, 108, 0.1);
+        }
+
+        .officer-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .officer-image {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            border: 4px solid #fff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .officer-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .officer-name {
+            font-size: 1.5em;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #1a2a6c, #2d4386);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .officer-title {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 16px;
+        }
+
+        .email-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #2d4386, #1a2a6c);
+            color: white;
+            text-decoration: none;
+            border-radius: 980px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .email-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(29, 42, 108, 0.3);
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 120px 32px 60px;
+            background: linear-gradient(to right, #f5f1eb, #ebe6e0);
+        }
+
+        .page-header h1 {
+            font-size: 3.5em;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #1a2a6c, #2d4386);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            font-size: 1.2em;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Mission Section */
+        .mission-section {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 0 32px;
+        }
+
+        .mission-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 32px;
+            background: linear-gradient(135deg, #1a2a6c, #2d4386);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mission-section p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        /* Values Section */
+        .values-section {
+            background: linear-gradient(135deg, rgba(26, 42, 108, 0.05), rgba(45, 67, 134, 0.1));
+            padding: 80px 32px;
+        }
+
+        .values-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .values-container h2 {
+            font-size: 2.5em;
+            margin-bottom: 48px;
+            text-align: center;
+            background: linear-gradient(135deg, #1a2a6c, #2d4386);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .value-item {
+            margin-bottom: 32px;
+        }
+
+        .value-item strong {
+            font-size: 1.3em;
+            color: #1a2a6c;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* Officers Grid Update */
+        .officers-section {
+            padding: 80px 32px;
+        }
+
+        .officers-section h2 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 48px;
+            background: linear-gradient(135deg, #1a2a6c, #2d4386);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f5f1eb;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 24px 32px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-left {
+            text-align: left;
+        }
+
+        .footer-center {
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 20px;
+            justify-content: flex-end;
+        }
+
+        .footer p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Responsive footer */
+        @media (max-width: 768px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .footer-left,
+            .footer-center {
+                text-align: center;
+            }
+
+            .footer-right {
+                justify-content: center;
+            }
+        }
+
+        /* Footer styling */
+        .footer-right a {
+            color: #666;  /* Changed from blue to grey */
+            font-size: 1.2rem;  /* Increased size to match index.html */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-right a:hover {
+            color: #1a2a6c;  /* Keep the hover color consistent */
+        }
+
+        /* Icon sizing */
+        .footer-right i {
+            font-size: 1.2rem;  /* Ensure icons are the same size */
+        }
+
+        /* Logo styling */
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            height: 40px;  /* Adjust size as needed */
+            width: 40px;   /* Adjust size as needed */
+            border: 2px solid #1a2a6c;
+            border-radius: 8px;
+            padding: 2px;
+            background-color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Copy navigation from index.html -->
+    <nav id="navbar">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="logo-link">
+                <img src="{{ url_for('static', filename='images/logo/corner_logo.jpg') }}" alt="Homelab Club Logo" class="nav-logo">
+                <div class="logo gradient-text">Homelab Club</div>
+            </a>
+            <ul>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                <li><a href="{{ url_for('index') }}#benefits">Benefits</a></li>
+                <li><a href="{{ url_for('index') }}#meetings">Meetings</a></li>
+                <li><a href="{{ url_for('index') }}#join">Join Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>Meet Our Team</h1>
+        <p>The dedicated officers behind The Homelab Club at OSU</p>
+    </div>
+
+    <div class="officers-grid">
+        <div class="officer-card">
+            <div class="officer-image">
+                <img src="{{ url_for('static', filename='/images/officers/president.jpg') }}" alt="Club President">
+            </div>
+            <h3 class="officer-name">Oliver Dougherty</h3>
+            <p class="officer-title">President</p>
+            <a href="mailto:homelab.clubs@oregonstate.edu" class="email-btn">
+                <i class="fas fa-envelope"></i>
+                Contact
+            </a>
+        </div>
+
+        <div class="officer-card">
+            <div class="officer-image">
+                <img src="{{ url_for('static', filename='images/officers/vicepresident.jpg') }}" alt="Vice President">
+            </div>
+            <h3 class="officer-name">Scott Campbell</h3>
+            <p class="officer-title">Vice President</p>
+            <a href="mailto:homelab.clubs@oregonstate.edu" class="email-btn">
+                <i class="fas fa-envelope"></i>
+                Contact
+            </a>
+        </div>
+
+        <div class="officer-card">
+            <div class="officer-image">
+                <img src="{{ url_for('static', filename='images/officers/treasurer.jpg') }}" alt="Treasurer">
+            </div>
+            <h3 class="officer-name">Justin Lee</h3>
+            <p class="officer-title">Treasurer</p>
+            <a href="mailto:homelab.clubs@oregonstate.edu" class="email-btn">
+                <i class="fas fa-envelope"></i>
+                Contact
+            </a>
+        </div>
+
+        <div class="officer-card">
+            <div class="officer-image">
+                <img src="{{ url_for('static', filename='images/officers/techcoordinator.jpg') }}" alt="Technical Coordinator">
+            </div>
+            <h3 class="officer-name">TBD</h3>
+            <p class="officer-title">Technical Coordinator</p>
+            <a href="mailto:homelab.clubs@oregonstate.edu" class="email-btn">
+                <i class="fas fa-envelope"></i>
+                Contact
+            </a>
+        </div>
+    </div>
+
+    <!-- Mission -->
+    <div class="mission-section">
+        <h2>Mission</h2>
+        <p>The Homelab Club at Oregon State University is a student-run organization dedicated to helping students build and manage their own home server infrastructure. We provide a collaborative environment where members can learn about system administration, networking, and self-hosted services.</p>
+        <p>Our club welcomes students of all skill levels and backgrounds. Whether you're just starting your homelab journey or you're an experienced system administrator, our community offers opportunities to learn, share knowledge, and grow your technical skills.</p>
+        <p>Through hands-on workshops, project collaborations, and regular meetings, we help members develop practical skills in server management, network security, and infrastructure deployment. Our goal is to bridge the gap between classroom learning and real-world implementation.</p>
+    </div>
+
+    <!-- Values -->
+    <div class="values-section">
+        <div class="values-container">
+            <h2>Values</h2>
+            <div class="value-item">
+                <strong>Hands-on Learning</strong>
+                <p>We believe in learning by doing, providing practical experience with real hardware and infrastructure.</p>
+            </div>
+            <div class="value-item">
+                <strong>Community Support</strong>
+                <p>We foster a welcoming environment where members can share knowledge, collaborate on projects, and help each other grow.</p>
+            </div>
+            <div class="value-item">
+                <strong>Technical Excellence</strong>
+                <p>We strive for best practices in system administration, security, and infrastructure management.</p>
+            </div>
+            <div class="value-item">
+                <strong>Open Source Philosophy</strong>
+                <p>We embrace and contribute to the open-source community, sharing our knowledge and solutions freely.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <p>&copy; 2025 Homelab Club at Oregon State University</p>
+            </div>
+            <div class="footer-center">
+                <p>Built with tears by The Homelab Club Team</p>
+            </div>
+            <div class="footer-right">
+                <a href="https://github.com/Homelab-Club" target="_blank" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="mailto:homelab.clubs@oregonstate.edu" aria-label="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="https://discord.gg/bfxjgvzCSf" target="_blank" aria-label="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 
