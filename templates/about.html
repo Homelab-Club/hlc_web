@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* Base styles from index.html */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -22,7 +21,6 @@
             line-height: 1.6;
         }
 
-        /* Navigation styles from index.html */
         nav {
             background-color: #ebe6e0;
             border-bottom: 1px solid #d4cdc3;
@@ -97,7 +95,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Officers Grid */
         .officers-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -171,7 +168,6 @@
             box-shadow: 0 4px 12px rgba(29, 42, 108, 0.3);
         }
 
-        /* Page Header */
         .page-header {
             text-align: center;
             padding: 120px 32px 60px;
@@ -194,7 +190,6 @@
             margin: 0 auto;
         }
 
-        /* Mission Section */
         .mission-section {
             max-width: 800px;
             margin: 80px auto;
@@ -217,7 +212,6 @@
             line-height: 1.8;
         }
 
-        /* Values Section */
         .values-section {
             background: linear-gradient(135deg, rgba(26, 42, 108, 0.05), rgba(45, 67, 134, 0.1));
             padding: 80px 32px;
@@ -249,7 +243,6 @@
             margin-bottom: 8px;
         }
 
-        /* Officers Grid Update */
         .officers-section {
             padding: 80px 32px;
         }
@@ -264,7 +257,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Footer */
         .footer {
             background: #f5f1eb;
             border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -301,7 +293,6 @@
             margin: 0;
         }
 
-        /* Responsive footer */
         @media (max-width: 768px) {
             .footer-container {
                 grid-template-columns: 1fr;
@@ -318,24 +309,21 @@
             }
         }
 
-        /* Footer styling */
         .footer-right a {
-            color: #666;  /* Changed from blue to grey */
-            font-size: 1.2rem;  /* Increased size to match index.html */
+            color: #666;
+            font-size: 1.2rem;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         .footer-right a:hover {
-            color: #1a2a6c;  /* Keep the hover color consistent */
+            color: #1a2a6c;
         }
 
-        /* Icon sizing */
         .footer-right i {
-            font-size: 1.2rem;  /* Ensure icons are the same size */
+            font-size: 1.2rem;
         }
 
-        /* Logo styling */
         .logo-link {
             display: flex;
             align-items: center;
@@ -344,8 +332,8 @@
         }
 
         .nav-logo {
-            height: 40px;  /* Adjust size as needed */
-            width: 40px;   /* Adjust size as needed */
+            height: 40px;
+            width: 40px;
             border: 2px solid #1a2a6c;
             border-radius: 8px;
             padding: 2px;
@@ -359,7 +347,6 @@
     </style>
 </head>
 <body>
-    <!-- Copy navigation from index.html -->
     <nav id="navbar">
         <div class="container">
             <a href="{{ url_for('index') }}" class="logo-link">
@@ -430,7 +417,6 @@
         </div>
     </div>
 
-    <!-- Mission -->
     <div class="mission-section">
         <h2>Mission</h2>
         <p>The Homelab Club at Oregon State University is a student-run organization dedicated to helping students build and manage their own home server infrastructure. We provide a collaborative environment where members can learn about system administration, networking, and self-hosted services.</p>
@@ -438,7 +424,6 @@
         <p>Through hands-on workshops, project collaborations, and regular meetings, we help members develop practical skills in server management, network security, and infrastructure deployment. Our goal is to bridge the gap between classroom learning and real-world implementation.</p>
     </div>
 
-    <!-- Values -->
     <div class="values-section">
         <div class="values-container">
             <h2>Values</h2>
